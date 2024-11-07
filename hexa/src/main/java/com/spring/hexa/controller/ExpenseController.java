@@ -46,32 +46,37 @@ public String showLogin()
 			}
 	         
 }
-@GetMapping("/student-dashboard")
-public String goToStudentDashboard(HttpServletRequest req,HttpSession session) {
-	//InsertExpense
+@GetMapping("/user-dashboard")
+public String goToUserDashboard(HttpServletRequest req,HttpSession session) {
+	
+	  List <Expense> list =expenseService.fetchExpenses((String)session.getAttribute("username")); 
+	
+	  req.setAttribute("expenses", list);
+		return "dashboard";
+}
+@GetMapping("/expense/deleted")
+public String expenseDelete(HttpServletRequest req,HttpSession session) {
+	String cid = req.getParameter("cid");
+	expenseService.softDelete(cid);
+	 List <Expense> list =expenseService.fetchExpenses((String)session.getAttribute("username")); 
+
+		  req.setAttribute("expenses", list);
+	return "redirect:/user-dashboard";
+}
+	
+@GetMapping("/expense/added")
+
+public String addExpense(HttpServletRequest req,HttpSession session) {
 	Expense expense = new Expense();
 	expense.setAmount(Double.parseDouble(req.getParameter("amount")));
 	expense.setDescription(req.getParameter("description"));
 	String category = req.getParameter("category");
 	String username = (String)session.getAttribute("username");
 	expenseService.addExpense(username,expense,category);
-	System.out.println("Hello");
-	//fetch all courses
-	  List <Expense> list =expenseService.fetchExpenses((String)session.getAttribute("username")); 
-	//List listCourses courseService.fetchAllCourses();
-	  req.setAttribute("expenses", list);
-		return "dashboard";
+	return "redirect:/user-dashboard";
 }
-
-@GetMapping("/delete-course")
-public String deleteCourse(HttpServletRequest req) {
-	String cid = req.getParameter("cid");
-	expenseService.softDelete(cid);
-	return "redirect:/student-dashboard";
-}
-
 @GetMapping("/add/info")
-public String addExpense(HttpServletRequest req,HttpSession session) {
+public String takeUserExpenseInfo(HttpServletRequest req,HttpSession session) {
 	
 	return "form";
 	
