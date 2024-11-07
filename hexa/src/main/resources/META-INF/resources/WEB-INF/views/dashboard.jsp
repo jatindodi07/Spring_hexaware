@@ -38,7 +38,7 @@
 										  <td><%=c.getDate() %></td>
 										  <td><%=c.getDescription() %></td>
 										  <td><%=c.getExpenseCategoryobj().getExpenseCategory() %></td>
-										 <td><a href="<%=request.getContextPath() %>/delete-course?cid=<%=c.getExpense_id() %>">Delete</a></td>
+										 <td><a href="<%=request.getContextPath() %>/expense/deleted?cid=<%=c.getExpense_id() %>">Delete</a></td>
 										</tr>										
 									<%	
 									} 
